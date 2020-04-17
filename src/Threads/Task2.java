@@ -16,10 +16,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -39,9 +37,10 @@ public class Task2 {
 
         int blockSize = (int) (Math.ceil((endNum - startNum) / (double) threadsNumber));
 
-        List<Integer> primeList = Collections.synchronizedList(new ArrayList<>()); //ToDo by MV: find sync collection
+        List<Integer> primeList = Collections.synchronizedList(new ArrayList<>());
 
-        ExecutorService service = Executors.newFixedThreadPool(threadsNumber);
+        //ExecutorService service = Executors.newFixedThreadPool(threadsNumber);
+        ExecutorService service = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()); //ToDo by MV
 
         for (int i = 0; i < threadsNumber; i++) {
             int blockStart = startNum + i * blockSize;
@@ -72,9 +71,10 @@ public class Task2 {
 
         int blockSize = (int) (Math.ceil((endNum - startNum) / (double) threadsNumber));
 
-        List<Integer> primeList = Collections.synchronizedList(new ArrayList<>()); //ToDo by MV: find sync collection
+        List<Integer> primeList = Collections.synchronizedList(new ArrayList<>());
 
-        ExecutorService service = Executors.newFixedThreadPool(threadsNumber);
+        //ExecutorService service = Executors.newFixedThreadPool(threadsNumber);
+        ExecutorService service = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()); //ToDo by MV
 
         for (int i = 0; i < threadsNumber; i++) {
             int blockStart = startNum + i * blockSize;

@@ -10,7 +10,8 @@ public class Main {
 
         Task2 t2 = new Task2();
         //System.out.println(t2.primesSingleList());
-        System.out.println(t2.primesMultipleLists());
+       // System.out.println(t2.primesMultipleLists());
+        System.out.println(Runtime.getRuntime().availableProcessors());
 
 
     }

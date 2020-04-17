@@ -24,8 +24,7 @@ public class Task1 extends Thread {
     public static boolean isPrime(int toTest) {
         double root = Math.sqrt(toTest);
 
-        if (toTest <= 1) return false; //ToDo check (toTest & 1) == 0
-
+        if (toTest <= 1) return false;
         for (int n = 2; n <= root; n++) {
             if (toTest % n == 0) {
                 return false;
@@ -48,7 +47,7 @@ public class Task1 extends Thread {
         int blockSize = (int) (Math.ceil((endNum - startNum) / (double) threadsNumber));
 
         List<Thread> threadsList = new ArrayList<>();
-        List<Integer> primeList = Collections.synchronizedList(new ArrayList<>()); //ToDo by MV: find sync collection
+        List<Integer> primeList = Collections.synchronizedList(new ArrayList<>());
 
         for (int i = 0; i < threadsNumber; i++) {
             int blockStart = startNum + i * blockSize;
@@ -83,7 +82,7 @@ public class Task1 extends Thread {
         int blockSize = (int) (Math.ceil((endNum - startNum) / (double) threadsNumber));
 
         List<Thread> threadsList = new ArrayList<>();
-        List<Integer> primeList = Collections.synchronizedList(new ArrayList<>()); //ToDo by MV: find sync collection
+        List<Integer> primeList = Collections.synchronizedList(new ArrayList<>());
 
         for (int i = 0; i < threadsNumber; i++) {
             int blockStart = startNum + i * blockSize;
