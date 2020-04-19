@@ -15,58 +15,76 @@ package Threads;
             имя следующего файла.
 
 */
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class Task3 {
 
-    private byte[] content;
+    private static byte[] bytes;
+    private static String source;
 
-    private byte[] getContent() throws IOException {
 
-        Scanner scan = new Scanner(System.in);
+    private static String getContent() throws IOException {
+
+        /*Scanner scan = new Scanner(System.in);
         System.out.println("Name of the source file: ");
-        String fileName = scan.next();
+        String fileName = scan.next();*/
 
-        content = Files.readAllBytes(Paths.get(fileName));
-        return content;
+        bytes = Files.readAllBytes(Paths.get("sourceFile.txt"));
+        String source = new String(bytes);
+        return source;
     }
 
+    private static void findDuplicates() throws IOException {
 
-    static int findLongestRepeatingSubSeq(String str)
-    {
-        int n = str.length();
+        Set<Integer> result = new TreeSet<>();
 
-        // Create and initialize DP table
-        int[][] dp = new int[n+1][n+1];
+        source = getContent();
 
-        // Fill dp table (similar to LCS loops)
-        for (int i=1; i<=n; i++)
-        {
-            for (int j=1; j<=n; j++)
-            {
-                // If characters match and indexes are not same
-                if (str.charAt(i-1) == str.charAt(j-1) && i!=j)
-                    dp[i][j] =  1 + dp[i-1][j-1];
+        String regionSource = source.substring(0, source.length() / 2);
 
-                    // If characters do not match
-                else
-                    dp[i][j] = Math.max(dp[i][j-1], dp[i-1][j]);
+        int step = source.length() - regionSource.length() * 2;
+        int sourceStartIndex = 0;
+        int remainderStartIndex = regionSource.length();
+        int regionStartIndex = 0;
+        boolean flag = false;
+
+
+
+        while (source.length() > 0) {
+
+            if (regionSource.length() == 0 || flag) {
+                source = source.substring(sourceStartIndex + 1);
+                regionSource = source.substring(0, source.length() / 2);
+                flag = false;
+
+            } else if (regionSource.regionMatches(regionStartIndex, source, remainderStartIndex, regionSource.length())) {
+                result.add(regionSource.length());
+                flag = true;
+            } else {
+                regionSource = regionSource.substring(regionStartIndex, regionSource.length() - 1);
+                step += 2;
             }
         }
-        return dp[n][n];
+
+        System.out.println(result);
+        System.out.println(source);
+        System.out.println(source.length());
+        System.out.println(regionSource);
+        System.out.println("step: " + step);
+        System.out.println("remainderStartIndex: " + remainderStartIndex);
+
+
     }
 
-    public static void main (String[] args)
-    {
-        String str = "abcfwc01ab abcfwc01 xb";
-
-
-        System.out.println("The length of the largest subsequence that"
-                +" repeats itself is : "+findLongestRepeatingSubSeq(str));
-
-
+    public static void main(String[] args) throws IOException {
+        findDuplicates();
     }
 }

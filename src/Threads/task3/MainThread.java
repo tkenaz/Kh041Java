@@ -30,7 +30,7 @@ public class MainThread {
         Scanner scanner = new Scanner(System.in);
         System.out.println(Thread.currentThread().getName() + ": Please input fileName: ");
         String fileName = scanner.nextLine();
-        scanner.close(); // ToDo by MV check scanner close
+        //scanner.close();
         return fileName;
     }
 
