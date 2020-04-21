@@ -1,10 +1,5 @@
 package Annotations;
 
-/*
-Создать свою аннотацию.
-При запуске приложения создать по одному экземпляру класса, помеченному вашей аннотацией.
-Засетать поля классов из файла конфигурации. Любое значение, которое надо достать.*/
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;

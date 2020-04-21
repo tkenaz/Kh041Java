@@ -6,7 +6,8 @@ public class Monitor {
 
     private String fileName;
     private String status;
-    public static final String STOPWORD = "Abort operation";
+    private List<Integer> results;
+    public static final String STOP = "Abort operation";
 
     public synchronized void setFileName(String fileName) {
         if(fileName == null) {
@@ -56,17 +57,23 @@ public class Monitor {
     }
 
     public void setResult(List<Integer> results){
-
-
+        this.results = results;
+        Monitor.this.notifyAll();
     }
 
     public List<Integer> getResult(){
-
-        return null;
+        while (results.isEmpty()) {
+            try {
+                Monitor.this.wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return results;
     }
 
     public synchronized void abortThread(){
-        fileName = STOPWORD;
+        fileName = STOP;
         notifyAll();
     }
 }
