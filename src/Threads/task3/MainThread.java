@@ -10,7 +10,7 @@ public class MainThread {
 
         while(true) {
             String fileName = readFileName();
-            if (Monitor.STOPWORD.equals(fileName)) {
+            if (Monitor.STOP.equals(fileName)) {
                 monitor.abortThread();
                 break;
             }
@@ -30,7 +30,6 @@ public class MainThread {
         Scanner scanner = new Scanner(System.in);
         System.out.println(Thread.currentThread().getName() + ": Please input fileName: ");
         String fileName = scanner.nextLine();
-        //scanner.close();
         return fileName;
     }
 

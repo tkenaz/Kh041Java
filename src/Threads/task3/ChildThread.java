@@ -1,22 +1,17 @@
 package Threads.task3;
 
-import com.sun.tools.javac.util.ArrayUtils;
-import com.sun.xml.internal.ws.api.model.wsdl.WSDLOutput;
-
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 public class ChildThread {
 
     private Monitor monitor;
-    private byte[] bytes;
+    private static byte[] bytes;
+    private static String source;
 
     public ChildThread(Monitor monitor) {
         this.monitor = monitor;
@@ -30,14 +25,14 @@ public class ChildThread {
     private void launch() {
         String fileName;
 
-        while (!Monitor.STOPWORD.equals(fileName = monitor.getFileName())) {
+        while (!Monitor.STOP.equals(fileName = monitor.getFileName())) {
 
             try {
                 bytes = Files.readAllBytes(Paths.get(fileName));
             } catch (IOException e) {
                 System.out.println(Thread.currentThread().getName() + " ERROR: " + e.getMessage());
                 monitor.setStatus(": Impossible to read the file");
-                monitor.setResult(null); // ToDo by MV add 0 to the list
+                monitor.setResult(null);
                 continue;
             }
 
@@ -47,34 +42,50 @@ public class ChildThread {
 
         }
     }
-    private List<Byte> getContent() {
+    private String getContent() throws IOException {
+        Scanner scan = new Scanner(System.in);
+        System.out.println("Name of the source file: ");
+        String fileName = scan.next();
 
-        return null;
+        bytes = Files.readAllBytes(Paths.get("sourceFile.txt"));
+        String source = new String(bytes);
+        return source;
     }
     private List<Integer> findDuplicates() {
 
         List<Integer> result = new ArrayList<>();
-        byte[] tempArray = new byte[bytes.length/2];
 
-        int startIndex = 0;
-        int endIndex = tempArray.length -1;
-        int step = bytes.length - tempArray.length * 2;
+        try {
+            source = getContent();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        int matchStartIndex = bytes[0] + tempArray.length - 1;
+        String regionSource;
 
-        System.arraycopy(bytes, startIndex, tempArray, endIndex, tempArray.length);
+        int sourceStartIndex = 0;
 
-        // checking the temp array against potentially matching region in bytes
-        for (int i = 0; i < tempArray.length; i++) {
-            for (int j = matchStartIndex; j <= step; j++) {
-                if (tempArray[i] == bytes[j]) {
-                    i++;
-                    j++;
-                } else {
-                    matchStartIndex++;
+        int regionStartIndex = 0;
+
+
+        while (source.length() > 0) {
+            regionSource = source.substring(0, source.length() / 2);
+            while (regionSource.length() > 1) {
+
+                int remainderStartIndex = regionSource.length();
+
+                while (remainderStartIndex >= source.length() - regionSource.length() || remainderStartIndex < source.length()) {
+                    if (regionSource.regionMatches(regionStartIndex, source, remainderStartIndex, regionSource.length())) {
+                        result.add(regionSource.length());
+                        result.add(regionStartIndex);
+                        result.add(remainderStartIndex);
+
+                        remainderStartIndex++;
+                    }
                 }
+                regionSource = regionSource.substring(regionStartIndex, regionSource.length() - 1);
             }
-            step += 2;
+            source = source.substring(sourceStartIndex + 1);
         }
         return result;
     }

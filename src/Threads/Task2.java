@@ -1,16 +1,4 @@
 package Threads;
-/*
-* 1.	С использованием нескольких потоков выполнения (Thread) реализовать поиск простых чисел внутри заданного диапазона.
-    a.	Ввести с клавиатуры интервал поиска чисел (например, от 1 до 10000) и число потоков.
-    b.	Подумать, как разделять интервал поиска по потокам.
-    c.	Проверку на простоту реализовать самым простым способом: циклом от 2 до числа/2.
-    d.	Найденные числа должны быть записаны в одну общую коллекцию.
-
-        i.	Проверить, что будет быстрее, сохранять числа в общую коллекцию сразу по их нахождению.
-        ii.	Или сохранять найденные числа в отдельные коллекции каждого потока, а потом их содержимое добавлять в общую коллекцию.
-
-2.	Сделать такую же реализацию с использованием Executor’ов
-*/
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,8 +27,7 @@ public class Task2 {
 
         List<Integer> primeList = Collections.synchronizedList(new ArrayList<>());
 
-        //ExecutorService service = Executors.newFixedThreadPool(threadsNumber);
-        ExecutorService service = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()); //ToDo by MV
+        ExecutorService service = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
         for (int i = 0; i < threadsNumber; i++) {
             int blockStart = startNum + i * blockSize;
@@ -73,8 +60,7 @@ public class Task2 {
 
         List<Integer> primeList = Collections.synchronizedList(new ArrayList<>());
 
-        //ExecutorService service = Executors.newFixedThreadPool(threadsNumber);
-        ExecutorService service = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()); //ToDo by MV
+        ExecutorService service = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
         for (int i = 0; i < threadsNumber; i++) {
             int blockStart = startNum + i * blockSize;
